@@ -1,0 +1,68 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Part 1 - Build a webapp stack with CloudFormation
+Resources:
+  OurlovlyServer:
+    Type: AWS::EC2::Instance
+    Properties:
+      KeyName: Mohammed_key
+      ImageId: ami-052efd3df9dad4825 # ImageID valid only in us-east-1 region
+      InstanceType: t2.micro
+      Tags: 
+        - 
+          Key: Name
+          Value: OurServer
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          sudo apt update
+          sudo apt install openjdk-11-jre-headless -y
+          sudo apt update
+          sudo apt install maven -y
+          sudo apt update
+          sudo apt install awscli -y
+      SecurityGroupIds:
+        - Ref: SecurityGroup1
+
+
+#--------2 ec2---------------
+  ansibleServer:
+    Type: AWS::EC2::Instance
+    Properties:
+      KeyName: Mohammed_key
+      ImageId: ami-052efd3df9dad4825 # ImageID valid only in us-east-1 region
+      InstanceType: t2.micro
+      Tags: 
+        - 
+          Key: Name
+          Value: ansible
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          sudo apt update
+          sudo apt install software-properties-common -y
+          sudo add-apt-repository --yes --update ppa:ansible/ansible
+          sudo apt install ansible -y
+      SecurityGroupIds:
+        - Ref: SecurityGroup1
+
+#------------SG--------------------
+  SecurityGroup1: 
+    Properties: 
+      GroupDescription: "Allow http to client host"
+      SecurityGroupIngress: 
+        - 
+          CidrIp: 0.0.0.0/0
+          FromPort: 80
+          IpProtocol: tcp
+          ToPort: 80
+        -
+          CidrIp: 0.0.0.0/0
+          FromPort: 8080
+          IpProtocol: tcp
+          ToPort: 8080
+        -
+          CidrIp: 0.0.0.0/0
+          FromPort: 22
+          IpProtocol: tcp
+          ToPort: 22
+    Type: "AWS::EC2::SecurityGroup"
