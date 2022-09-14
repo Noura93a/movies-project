@@ -76,7 +76,7 @@ pipeline {
 
         stage('openDB') {
             steps {
-                sh "mvnspring-boot:run"
+                sh "mvn spring-boot:run"
             }
         }
 
