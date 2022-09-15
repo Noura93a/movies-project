@@ -10,21 +10,7 @@ Resources:
     Type: AWS::ElasticBeanstalk::Application
     Properties:
       ApplicationName: "moviesApp"
-
-  # myAppVersion:
-  #   Type: AWS::ElasticBeanstalk::ApplicationVersion
-  #   Properties:
-  #     ApplicationName:
-  #       Ref: "moviesApp"
-  #     SourceBundle:
-  #       S3Bucket:
-  #         Fn::Join:
-  #           - "-"
-  #           - 
-  #             - "mahas354"
-  #             - "us-east-1"
-  #       S3Key: "javabelt-0.0.1-SNAPSHOT.war"
-      
+    
 
   myConfigTemplate:
     Type: AWS::ElasticBeanstalk::ConfigurationTemplate
